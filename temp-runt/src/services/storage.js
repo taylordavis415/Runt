@@ -12,6 +12,7 @@ export async function loadRuntState() {
       return {
         ...defaultRuntState,
         ...parsed,
+        athleteProfile: parsed.athleteProfile ?? null,
         completedWorkouts: {
           ...defaultRuntState.completedWorkouts,
           ...(parsed.completedWorkouts ?? {}),

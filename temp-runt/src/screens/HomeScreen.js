@@ -11,11 +11,14 @@ import { styles } from "../theme/styles";
 import { isWorkoutCompleted } from "../utils/weekProgress";
 
 export default function HomeScreen({ navigation }) {
-  const { sleepHours, soreness, energy, completedWorkouts } = useRuntData();
+  const { athleteProfile, sleepHours, soreness, energy, completedWorkouts } = useRuntData();
   const weekProgress = useWeekProgress();
   const today = getTodaysWorkout();
   const runDay = isRunDay(today);
   const isCompleted = isWorkoutCompleted(completedWorkouts, today.id);
+
+  const athleteName = athleteProfile?.name?.trim() || "Athlete";
+  const raceName = athleteProfile?.raceName?.trim();
 
   const sleepDisplay = sleepHours.trim() ? `${sleepHours}h` : "8h 14m";
   const sorenessDisplay = soreness.trim() ? soreness : "82%";
@@ -27,8 +30,9 @@ export default function HomeScreen({ navigation }) {
 
       <View style={styles.header}>
         <View>
-          <Text style={styles.greeting}>Good Morning, Taylor</Text>
+          <Text style={styles.greeting}>Good Morning, {athleteName}</Text>
           <Text style={styles.date}>{formatTodayDate()}</Text>
+          {raceName ? <Text style={homeStyles.raceName}>{raceName}</Text> : null}
         </View>
         <Text style={styles.bell}>🔔</Text>
       </View>
@@ -103,5 +107,11 @@ const homeStyles = StyleSheet.create({
     fontSize: 11,
     fontWeight: "900",
     letterSpacing: 0.6,
+  },
+  raceName: {
+    color: colors.pink,
+    fontSize: 15,
+    fontWeight: "800",
+    marginTop: 8,
   },
 });

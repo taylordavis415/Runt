@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "temp-runt",
-    "slug": "temp-runt",
+    "name": "Runt",
+    "slug": "runt",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

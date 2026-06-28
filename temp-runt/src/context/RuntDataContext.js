@@ -92,18 +92,36 @@ export function RuntDataProvider({ children }) {
     [updateState],
   );
 
+  const saveAthleteProfile = useCallback(
+    (athleteProfile) => {
+      updateState((previous) => ({ ...previous, athleteProfile }));
+    },
+    [updateState],
+  );
+
   const value = useMemo(
     () => ({
       ...state,
       isReady,
       toggleWorkoutComplete,
       markWorkoutComplete,
+      saveAthleteProfile,
       setSleepHours,
       setSoreness,
       setEnergy,
       setNotes,
     }),
-    [state, isReady, toggleWorkoutComplete, markWorkoutComplete, setSleepHours, setSoreness, setEnergy, setNotes],
+    [
+      state,
+      isReady,
+      toggleWorkoutComplete,
+      markWorkoutComplete,
+      saveAthleteProfile,
+      setSleepHours,
+      setSoreness,
+      setEnergy,
+      setNotes,
+    ],
   );
 
   if (!isReady) {
