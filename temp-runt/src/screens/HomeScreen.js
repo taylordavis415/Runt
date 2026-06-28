@@ -30,7 +30,9 @@ export default function HomeScreen({ navigation }) {
 
       <View style={styles.header}>
         <View>
-          <Text style={styles.greeting}>Good Morning, {athleteName}</Text>
+          <Text style={styles.greeting}>
+  Good Morning, {athleteName} 👋
+</Text>
           <Text style={styles.date}>{formatTodayDate()}</Text>
           {raceName ? <Text style={homeStyles.raceName}>{raceName}</Text> : null}
         </View>
