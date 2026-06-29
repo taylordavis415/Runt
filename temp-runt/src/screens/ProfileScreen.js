@@ -6,13 +6,68 @@ import { colors } from "../theme/colors";
 import { styles as sharedStyles } from "../theme/styles";
 
 export default function ProfileScreen() {
-  const { sleepHours, soreness, energy, notes, setSleepHours, setSoreness, setEnergy, setNotes } =
-    useRuntData();
+  const {
+  athleteProfile,
+  sleepHours,
+  soreness,
+  energy,
+  notes,
+  saveAthleteProfile,
+  setSleepHours,
+  setSoreness,
+  setEnergy,
+  setNotes,
+} = useRuntData();
 
   return (
     <ScrollView style={sharedStyles.screen} contentContainerStyle={sharedStyles.content}>
       <StatusBar style="light" />
+<View style={styles.card}>
+  <Text style={sharedStyles.label}>ATHLETE PROFILE</Text>
+  <Text style={styles.helper}>Edit your race and training preferences.</Text>
 
+  <Field
+    label="NAME"
+    placeholder="Taylor"
+    value={athleteProfile?.name || ""}
+    onChangeText={(text) => updateProfileField("name", text)}
+  />
+
+  <Field
+    label="RACE NAME"
+    placeholder="City to Sea Half Marathon"
+    value={athleteProfile?.raceName || ""}
+    onChangeText={(text) => updateProfileField("raceName", text)}
+  />
+
+  <Field
+    label="RACE DATE"
+    placeholder="10/18/2026"
+    value={athleteProfile?.raceDate || ""}
+    onChangeText={(text) => updateProfileField("raceDate", text)}
+  />
+
+  <Field
+    label="GOAL TIME"
+    placeholder="Finish strong"
+    value={athleteProfile?.goalTime || ""}
+    onChangeText={(text) => updateProfileField("goalTime", text)}
+  />
+
+  <Field
+    label="RUNS PER WEEK"
+    placeholder="4"
+    value={athleteProfile?.runsPerWeek || ""}
+    onChangeText={(text) => updateProfileField("runsPerWeek", text)}
+  />
+
+  <Field
+    label="LONG RUN DAY"
+    placeholder="Saturday"
+    value={athleteProfile?.longRunDay || ""}
+    onChangeText={(text) => updateProfileField("longRunDay", text)}
+  />
+</View>
       <View style={styles.header}>
         <Text style={sharedStyles.greeting}>Profile</Text>
         <Text style={sharedStyles.date}>Daily check-in & preferences</Text>
@@ -98,3 +153,9 @@ const styles = StyleSheet.create({
     paddingTop: 14,
   },
 });
+
+
+
+
+
+
