@@ -19,7 +19,48 @@ export default function HomeScreen({ navigation }) {
 
   const athleteName = athleteProfile?.name?.trim() || "Athlete";
   const raceName = athleteProfile?.raceName?.trim();
+  const raceDate = athleteProfile?.raceDate;
 
+let daysRemaining = null;
+
+if (raceDate) {
+  let race;
+
+  if (raceDate.includes("/")) {
+    const parts = raceDate.split("/");
+    const month = Number(parts[0]);
+    const day = Number(parts[1]);
+    let year = Number(parts[2]);
+
+    if (year < 100) {
+      year = 2000 + year;
+    }
+
+    race = new Date(year, month - 1, day);
+  } else {
+    race = new Date(raceDate);
+  }
+
+  const todayDate = new Date();
+
+  todayDate.setHours(0, 0, 0, 0);
+  race.setHours(0, 0, 0, 0);
+
+  if (!Number.isNaN(race.getTime())) {
+    const millisecondsPerDay = 1000 * 60 * 60 * 24;
+    daysRemaining = Math.ceil((race.getTime() - todayDate.getTime()) / millisecondsPerDay);
+  }
+}
+let currentWeek = 1;
+const totalWeeks = 16;
+
+if (daysRemaining !== null) {
+  const weeksUntilRace = Math.ceil(daysRemaining / 7);
+  currentWeek = totalWeeks - weeksUntilRace + 1;
+
+  if (currentWeek < 1) currentWeek = 1;
+  if (currentWeek > totalWeeks) currentWeek = totalWeeks;
+}
   const sleepDisplay = sleepHours.trim() ? `${sleepHours}h` : "8h 14m";
   const sorenessDisplay = soreness.trim() ? soreness : "82%";
   const energyDisplay = energy.trim() ? energy : "High";
@@ -29,15 +70,35 @@ export default function HomeScreen({ navigation }) {
       <StatusBar style="light" />
 
       <View style={styles.header}>
-        <View>
-          <Text style={styles.greeting}>
-  Good Morning, {athleteName} 👋
-</Text>
-          <Text style={styles.date}>{formatTodayDate()}</Text>
-          {raceName ? <Text style={homeStyles.raceName}>{raceName}</Text> : null}
-        </View>
-        <Text style={styles.bell}>🔔</Text>
+  <View>
+    <Text style={styles.greeting}>
+      Good Morning, {athleteName} 👋
+    </Text>
+
+    <Text style={styles.date}>{formatTodayDate()}</Text>
+
+    {raceName ? (
+  <View>
+    <Text style={homeStyles.raceName}>Race: {raceName}</Text>
+
+    {daysRemaining !== null ? (
+      <View>
+        <Text style={homeStyles.countdown}>
+          {daysRemaining} days remaining
+        </Text>
+
+        <Text style={homeStyles.weekCount}>
+          Week {currentWeek} of {totalWeeks}
+        </Text>
       </View>
+    ) : null}
+  </View>
+) : null}
+  </View>
+
+
+  <Text style={styles.bell}>🔔</Text>
+</View>
 
       <View style={styles.heroCard}>
         <View style={homeStyles.missionHeader}>
@@ -116,4 +177,16 @@ const homeStyles = StyleSheet.create({
     fontWeight: "800",
     marginTop: 8,
   },
+  countdown: {
+  color: "#FFFFFF",
+  fontSize: 14,
+  marginTop: 4,
+  opacity: 0.8,
+},
+weekCount: {
+  color: colors.pink,
+  fontSize: 14,
+  fontWeight: "800",
+  marginTop: 4,
+},
 });
