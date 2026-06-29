@@ -98,16 +98,43 @@ export function RuntDataProvider({ children }) {
     },
     [updateState],
   );
+const updatePersonalRecord = useCallback(
+  (field, value) => {
+    updateState((previous) => ({
+      ...previous,
+      personalRecords: {
+        ...previous.personalRecords,
+        [field]: value,
+      },
+    }));
+  },
+  [updateState],
+);
+
+const updateCurrentShoe = useCallback(
+  (field, value) => {
+    updateState((previous) => ({
+      ...previous,
+      currentShoe: {
+        ...previous.currentShoe,
+        [field]: value,
+      },
+    }));
+  },
+  [updateState],
+); 
 
   const value = useMemo(
     () => ({
       ...state,
       isReady,
+      updateCurrentShoe,
       toggleWorkoutComplete,
       markWorkoutComplete,
       saveAthleteProfile,
       setSleepHours,
       setSoreness,
+      updatePersonalRecord,
       setEnergy,
       setNotes,
     }),
@@ -115,6 +142,7 @@ export function RuntDataProvider({ children }) {
       state,
       isReady,
       toggleWorkoutComplete,
+      updateCurrentShoe,
       markWorkoutComplete,
       saveAthleteProfile,
       setSleepHours,

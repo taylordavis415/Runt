@@ -64,7 +64,21 @@ if (daysRemaining !== null) {
   const sleepDisplay = sleepHours.trim() ? `${sleepHours}h` : "8h 14m";
   const sorenessDisplay = soreness.trim() ? soreness : "82%";
   const energyDisplay = energy.trim() ? energy : "High";
+let recoveryTitle = "🟢 Ready\nto Train";
+let recoverySubtitle = "You're feeling great.";
 
+const sleep = parseFloat(sleepHours) || 0;
+
+const sorenessScore = parseInt(soreness) || 0;
+const energyScore = parseInt(energy) || 0;
+
+if (sleep < 6 || sorenessScore >= 8 || energyScore <= 3) {
+  recoveryTitle = "🔴 Recovery\nDay";
+  recoverySubtitle = "Take it easy today.";
+} else if (sleep < 7 || sorenessScore >= 5 || energyScore <= 6) {
+  recoveryTitle = "🟡 Moderate\nFatigue";
+  recoverySubtitle = "Train, but keep it controlled.";
+}
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <StatusBar style="light" />
@@ -137,7 +151,7 @@ if (daysRemaining !== null) {
       </View>
 
       <View style={styles.threeColumn}>
-        <MiniCard label="RECOVERY" value={sorenessDisplay} subtext="Good to go" />
+        <MiniCard label="RECOVERY" value={recoveryTitle} subtext={recoverySubtitle} />
         <MiniCard label="SLEEP" value={sleepDisplay} subtext="Quality good" />
         <MiniCard label="READINESS" value={energyDisplay} subtext="Let's do this" />
       </View>
