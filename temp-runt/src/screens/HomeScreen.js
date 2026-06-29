@@ -1,7 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import MiniCard from "../components/MiniCard";
 import ProgressRow from "../components/ProgressRow";
 import { formatTodayDate, getTodaysWorkout, isRunDay } from "../data/trainingPlan";
 import useRuntData from "../hooks/useRuntData";
@@ -25,7 +24,7 @@ let greetingTime = "Morning";
 if (currentHour >= 12 && currentHour < 17) {
   greetingTime = "Afternoon";
 } else if (currentHour >= 17 || currentHour < 2) {
-  greetingTime = "Night";
+  greetingTime = "Evening";
 }
   const raceName = athleteProfile?.raceName?.trim();
   const raceDate = athleteProfile?.raceDate;
@@ -80,6 +79,20 @@ const sleep = parseFloat(sleepHours) || 0;
 
 const sorenessScore = parseInt(soreness) || 0;
 const energyScore = parseInt(energy) || 0;
+
+let readinessScore = 0;
+
+// Sleep (40 points)
+readinessScore += Math.min((sleep / 8) * 40, 40);
+
+// Energy (30 points)
+readinessScore += Math.min((energyScore / 10) * 30, 30);
+
+// Soreness (30 points)
+// Less soreness = higher score
+readinessScore += Math.max(((10 - sorenessScore) / 10) * 30, 0);
+
+readinessScore = Math.round(readinessScore);
 
 if (sleep < 6 || sorenessScore >= 8 || energyScore <= 3) {
   recoveryTitle = "🔴 Recovery\nDay";
@@ -159,11 +172,27 @@ if (sleep < 6 || sorenessScore >= 8 || energyScore <= 3) {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.threeColumn}>
-        <MiniCard label="RECOVERY" value={recoveryTitle} subtext={recoverySubtitle} />
-        <MiniCard label="SLEEP" value={sleepDisplay} subtext="Quality good" />
-        <MiniCard label="READINESS" value={energyDisplay} subtext="Let's do this" />
-      </View>
+      <View style={styles.card}>
+  <Text style={styles.label}>TODAY'S READINESS</Text>
+
+  <Text style={homeStyles.readinessScore}>
+    {readinessScore}
+  </Text>
+
+  <Text style={homeStyles.readinessTitle}>
+    {recoveryTitle}
+  </Text>
+
+  <Text style={homeStyles.readinessSubtitle}>
+    {recoverySubtitle}
+  </Text>
+
+  <View style={homeStyles.readinessMetrics}>
+    <Text style={homeStyles.metricText}>Sleep: {sleepDisplay}</Text>
+    <Text style={homeStyles.metricText}>Energy: {energy || "--"}</Text>
+    <Text style={homeStyles.metricText}>Soreness: {soreness || "--"}</Text>
+  </View>
+</View>
 
       <View style={styles.card}>
         <Text style={styles.label}>WEEK PROGRESS</Text>
@@ -182,6 +211,39 @@ const homeStyles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 10,
   },
+  readinessScore: {
+  color: colors.cream,
+  fontSize: 64,
+  fontWeight: "900",
+  textAlign: "center",
+  marginTop: 8,
+},
+
+readinessTitle: {
+  color: colors.pink,
+  fontSize: 22,
+  fontWeight: "800",
+  textAlign: "center",
+  marginTop: 4,
+},
+
+readinessSubtitle: {
+  color: colors.muted,
+  fontSize: 15,
+  textAlign: "center",
+  marginTop: 6,
+},
+
+readinessMetrics: {
+  marginTop: 20,
+  gap: 8,
+},
+
+metricText: {
+  color: colors.cream,
+  fontSize: 15,
+  fontWeight: "600",
+},
   completedBadge: {
     backgroundColor: colors.green,
     borderRadius: 12,
