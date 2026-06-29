@@ -18,6 +18,15 @@ export default function HomeScreen({ navigation }) {
   const isCompleted = isWorkoutCompleted(completedWorkouts, today.id);
 
   const athleteName = athleteProfile?.name?.trim() || "Athlete";
+  const currentHour = new Date().getHours();
+
+let greetingTime = "Morning";
+
+if (currentHour >= 12 && currentHour < 17) {
+  greetingTime = "Afternoon";
+} else if (currentHour >= 17 || currentHour < 2) {
+  greetingTime = "Night";
+}
   const raceName = athleteProfile?.raceName?.trim();
   const raceDate = athleteProfile?.raceDate;
 
@@ -86,7 +95,7 @@ if (sleep < 6 || sorenessScore >= 8 || energyScore <= 3) {
       <View style={styles.header}>
   <View>
     <Text style={styles.greeting}>
-      Good Morning, {athleteName} 👋
+      Good {greetingTime}, {athleteName} 👋
     </Text>
 
     <Text style={styles.date}>{formatTodayDate()}</Text>
