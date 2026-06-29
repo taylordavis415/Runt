@@ -13,8 +13,9 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
-    },
+  "supportsTablet": true,
+  "bundleIdentifier": "com.taylordavis.runt"
+},
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -26,7 +27,19 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font"
-    ]
+  "expo-font",
+  [
+    "react-native-health",
+    {
+      "NSHealthShareUsageDescription": "Runt reads your Apple Health data to calculate readiness, recovery, and provide personalized coaching.",
+      "NSHealthUpdateUsageDescription": "Runt writes completed workouts and training data to Apple Health."
+    }
+  ]
+],
+    "extra": {
+      "eas": {
+        "projectId": "4b03ebf4-0d81-448d-8e77-265967fd49c4"
+      }
+    }
   }
 }
